@@ -9,7 +9,7 @@ draw_count = 0
 player_last_played = [(), (), (), (), (), ()]
 
 
-def initialize_game():
+def initialize_game(): # initializes the game and allows the player to choose number of players & their names.
     while True:
         try:
             player_count = int(input('How many players do you want to play?: '))
@@ -22,16 +22,14 @@ def initialize_game():
         except ValueError:
             print('Only numerical input allowed!')
 
-    print(player_count)
 
-
-def pick_initial_card(inp, out):
+def pick_initial_card(inp, out): # picks a random card to start off the game
     randomCard = random.choice(inp)
     out.append(randomCard)
     return out
 
 
-def create_deck():
+def create_deck(): # creates the deck and assigns scores to each card
     global played_deck, deck
     deck = []
     for character in characters:
@@ -55,7 +53,7 @@ def create_deck():
     played_deck = pick_initial_card(deck, played_deck)
 
 
-def matches(card1, card2):
+def matches(card1, card2): # check if a move is legal / card match (check readme)
     _return = False
 
     if card1[0] == card2[0]:
@@ -69,9 +67,9 @@ def shuffle_deck():
     random.shuffle(deck)
 
 
-def draw_card(closed_pile, player_cards):
+def draw_card(closed_pile, player_cards): # draws 1 card from the deck into a player's hand
     global played_deck
-    if len(closed_pile) == 0:
+    if len(closed_pile) == 0: # if there are no more cards left in the deck, reset it (check readme)
         _lastCard = getLastCard(played_deck)
         closed_pile = played_deck[:-1]
         played_deck = [_lastCard]
@@ -86,24 +84,21 @@ create_deck()
 shuffle_deck()
 
 
-def draw_cards_for_players():
-    _currentTurn = 5
+def draw_cards_for_players(): # draws the initial 7 cards for each player
     for player in players:
         for card_count in range(7):
             draw_card(deck, player[1])
 
 
-def determine_next_turn(curr_player):
+def determine_next_turn(curr_player): # determines whose turn is next.
     curr_player += 1
-    curr_player = curr_player % len(players)
+    curr_player = curr_player % len(players) # using modulo to return to ID 0 once we get out of bounds
     return curr_player
 
 
-def hasCardsLeft(player_id):
+def hasCardsLeft(player_id): #checks if the bot has got any cards left
     player = players[player_id]
-    if len(player[1]) == 0:
-        return False
-    return True
+    return len(player[1]) == 0
 
 
 def getLastCard(player_cards):
@@ -129,7 +124,7 @@ def skipped_card(player_id):
     return players[player_id][4]
 
 
-def botPickCard(bot_id):
+def botPickCard(bot_id): # called when it is the bots turn to play a card
     global draw_count
     available = players[bot_id][1]
     foundCard = False
@@ -187,15 +182,15 @@ def botPickCard(bot_id):
         return foundCard
 
 
-def calculate_scores():
+def calculate_scores(): # gets the scores for the players, ordering them from player with the least score (first) to the one with highest (last).
     scores = []
-    for i in range(len(players)):
+    for i in range(len(players)): # calculate the score for player
         player = players[i]
         score = 0
         for card in player[1]:
             score += card[2]
         scores.append((i, score))
-    scores.sort(key=lambda tup: tup[1])
+    scores.sort(key=lambda tup: tup[1]) # sort the array
 
     for _tuple in scores:
         players[_tuple[0]][2] += _tuple[1]
@@ -203,12 +198,12 @@ def calculate_scores():
     return scores
 
 
-def reset_player_cards():
+def reset_player_cards(): #
     for player in players:
         player[1] = []
 
 
-def restart_game():
+def restart_game(): # starts a new round
     create_deck()
     shuffle_deck()
     reset_player_cards()
@@ -216,30 +211,22 @@ def restart_game():
 
 
 def is_plus_two(card):
-    if card[0] == '7':
-        return True
-    return False
+    return card[0] == '7'
 
 
 def is_replay(card):
-    if card[0] == '8':
-        return True
-    return False
+    return  card[0] == '8'
 
 
 def is_skip(card):
-    if card[0] == '9':
-        return True
-    return False
+    return card[0] == '9'
 
 
 def is_ace(card):
-    if card[0] == 'A':
-        return True
-    return False
+    return card[0] == 'A'
 
 
-def replay_played(player_id):
+def replay_played(player_id): # called when a replay card is played
     global _currentPlayer
     if not hasCardsLeft(player_id):
         draw_card(deck, players[player_id][1])
@@ -248,12 +235,12 @@ def replay_played(player_id):
         _currentPlayer -= 1
 
 
-def plus_two_played():
+def plus_two_played(): # called when a player calls a plus 2 card
     global draw_count
     draw_count += 2
 
 
-def ace_played(player_id):
+def ace_played(player_id): # called when a player plays ace card.
     if player_id == 0:
         print("Available cards: ")
         print(players[player_id][1])
@@ -273,29 +260,29 @@ def ace_played(player_id):
             print("Invalid range input.")
 
 
-def has_plus_two(player_id):
+def has_plus_two(player_id): # checks if the player has got a +2 card
     for card in players[player_id][1]:
         if is_plus_two(card):
             return True
     return False
 
 
-def draw_plus_cards(player_id):
+def draw_plus_cards(player_id): # draws the extra cards for a player
     global draw_count
     for i in range(draw_count):
         draw_card(deck, players[player_id][1])
     draw_count = 0
 
 
-def get_player_last_played(player_id):
+def get_player_last_played(player_id): # returns the card the player last played.
     return players[player_id][3]
 
 
-def set_player_last_played(player_id, card):
+def set_player_last_played(player_id, card): # updates the card the player last played.
     players[player_id][3] = card
 
 
-def start_game():
+def start_game(): # basically, handling all game calls.
     global _currentPlayer, deck, played_deck, draw_count
     _currentPlayer = determine_next_turn(_currentPlayer)
     while hasCardsLeft(_currentPlayer):
