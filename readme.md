@@ -25,7 +25,7 @@ This is a basic Python implementation of the Switch (card game), however, with d
   <li>Game ends when one of the players reaches a score of 50. Players are ordered starting from the one with less score.</li>
  </ul>
 
-<b>Bugs:</>
+<b>Bugs:</b>
 <ul><li>Sometimes there will be an infinite skipping loop between one player and a bot.</li>
 <li>Sometimes there will be an infinite additioning loop &/ players will not be able to play a card.</li>
 </ul>
