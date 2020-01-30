@@ -4,6 +4,7 @@ Game was mostly done for fun in a matter of 2~3 hours and is not finished. It is
 
 This is a basic Python implementation of the Switch (card game), however, with different rules. The game supports up to an unlimited number of bots. Player is always assigned to index 0, while bots receive their ID's accordingly (varies on assignment).
 
+<hr/>
 <b>Card types:</b>
 	<ul>
 		<li>Ace: Player gets to play whatever card he desires, regardless of what already exists on field.</li></li>
@@ -12,6 +13,7 @@ This is a basic Python implementation of the Switch (card game), however, with d
   <li>9: Cause next player to loose his turn.</li>
 	</ul>
   
+  <hr/>
 <b>Game rules:</b>
 <ul>
   <li>The deck is formed of a total of 52 cards.</li>
@@ -25,6 +27,7 @@ This is a basic Python implementation of the Switch (card game), however, with d
   <li>Game ends when one of the players reaches a score of 50. Players are ordered starting from the one with less score.</li>
  </ul>
 
+<hr/>
 <b>Bugs:</b>
 <ul><li>Sometimes there will be an infinite skipping loop between one player and a bot.</li>
 <li>Sometimes there will be an infinite additioning loop &/ players will not be able to play a card.</li>
